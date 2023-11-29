@@ -1,137 +1,154 @@
 <!DOCTYPE html>
-<html>
-<meta charset="utf-8">
-		<meta name="viewport" />
-		<title>醒狮·乐</title>
-		<style type="text/css">
-	 
-	 body{
-	 	
-	 	width:640px;
-	 	height:1030px;
-	 	margin:0 auto;
-	 	min-width:640px;
-	 	font-family:楷体;
-	 	background-color:#faebd7;
-		overflow-x:hidden;
-	 }
-	 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport">
+  <title>醒狮·乐</title>
+  <style>
+    
+	body{
+		
+		width:640px;
+		height:1030px;
+		margin:0 auto;
+		min-width:640px;
+		font-family:楷体;
+		background-color:#faebd7;
+	}
+	
+	#mainDiv {
+	 display: flex;
+	 flex-direction:column;
+	 justify-content: center;
+	 align-items: center;
+	
+	}
+	
 	#title{
-		width:200%;
+		width:150%;
 		position:relative;
-		left:-300px;
+		left:-45px;
 		margin-bottom:50px;
 	}
-	 
-	 .p{
-	 	font-size:40px;
-	 }
-	 
-	 .all{
-	 	
-	 	display:flex;
-	 	flex-direction:column;
-	 	flex-wrap:wrap;
-	 }
-	 
-    .box {
-      width: 200px;
-      height: 200px;
-      border: 2px solid #000;
-      margin: 5px;
-      float: left;
-      position: relative;
-    }
-    .image {
-      width:200px;
+		
+	.p{
+		font-size:35px;
+	}
+	
+	#container{
+		
+		display:flex;
+		
+	}
+	
+    .draggable {
+      width: 250px;
       cursor: move;
-      position: absolute;
-      z-index: 1000;
-	  margin-left:430px;
-	  margin-top:-209px;
+	  display:flex;
+	  justify-content:space-around;
+	  margin-left:40px;
+	  margin:10px;
+	  
+    }
+
+    .drop-zone {
+      width: 250px;
+      height: 250px;
+      border: 2px solid #000;
+	  margin-right:50px;
+      
+	  display:flex;
+	  justify-content:space-around;
+	  position:relative;
     }
 	
 	.volume{
 		
-		width:40px;
+		width:70px;
 		margin-top:100px;
+		position:relative;
+		left:-250px;
+		margin-bottom:30px;
 		}
- </style>
- 
-	
- 
+		
+  </style>
 </head>
 <body>
- 
- <img src="醒狮/xingshi·le.png" id="title"/>
- 
- <div class="p">点击播放键，听听都是什么乐器，<br/>把正确的乐器图标拉到对应的位置吧！</div>
- <div><img src="https://cdn-icons-png.flaticon.com/512/5225/5225800.png" class="volume" alt="Image" onclick="playAudio()" /></div>
- <audio id="myAudio">
-   <source src="\ex2\实验2\醒狮\╨╤╩¿\music\music1.mp3" type="audio/mpeg">
- </audio>
- <div id="mainDiv">
- 
- <div class="all">
- <div class="box"></div>
- <div><img class="image" src="https://static.vecteezy.com/system/resources/previews/016/779/529/original/chinese-new-year-illustration-drum-png.png " alt=""/>
+	<div id="mainDiv">
+	<img src="醒狮/xingshi·le.png" id="title"/>
+	
+	<div class="p">点击播放键，听听都是什么乐器，<br/>把正确的乐器图标拉到对应的位置吧！</div>
+	  
+	<div><img src="https://cdn-icons-png.flaticon.com/512/5225/5225800.png" class="volume" alt="Image" onclick="playAudio()" /></div>
+	<audio id="myAudio">
+	  <source src="\ex2\实验2\醒狮\╨╤╩¿\music\music1.mp3" type="audio/mpeg">
+	</audio>
+	  
+  <div id="container">
+	<div id="dropZone1" class="drop-zone" ondrop="drop(event, 'dropZone1')" ondragover="allowDrop(event)">
+	</div>
+	<img id="image1" class="draggable" src="https://static.vecteezy.com/system/resources/previews/016/779/529/original/chinese-new-year-illustration-drum-png.png" draggable="true" ondragstart="drag(event)">
+	</div>
+	
+	<div><img src="https://cdn-icons-png.flaticon.com/512/5225/5225800.png" class="volume" alt="Image" onclick="playAudio1()"/></div>
+	<audio id="myAudio1">
+	  <source src="\ex2\实验2\醒狮\╨╤╩¿\music\music2.mp3" type="audio/mpeg">
+	</audio>
+	
+<div id="container">
+	<div id="dropZone2" class="drop-zone" ondrop="drop(event, 'dropZone2')" ondragover="allowDrop(event)">
+	</div>
+  <img id="image2" class="draggable" src="https://img.tukuppt.com/png_preview/00/26/14/aWQEJpQSmP.jpg!/fw/780" draggable="true" ondragstart="drag(event)">
+  </div>
+  
+  <div><img src="https://cdn-icons-png.flaticon.com/512/5225/5225800.png" class="volume" alt="Image" onclick="playAudio2()"/></div>
+  <audio id="myAudio2">
+    <source src="\ex2\实验2\醒狮\╨╤╩¿\music\music3.mp3" type="audio/mpeg">
+  </audio>
+  
+  <div id="container">
+	  <div id="dropZone3" class="drop-zone" ondrop="drop(event, 'dropZone3')" ondragover="allowDrop(event)">
+	  </div>
+  <img id="image3" class="draggable" src="https://imgservice.suning.cn/uimg1/b2c/image/aUZL4f3a4IYbxriYN16h4w.jpg_800w_800h_4e" draggable="true" ondragstart="drag(event)">
+	</div>
  </div>
- 
- <div><img src="https://cdn-icons-png.flaticon.com/512/5225/5225800.png" class="volume" alt="Image" onclick="playAudio1()"/></div>
- <audio id="myAudio1">
-   <source src="\ex2\实验2\醒狮\╨╤╩¿\music\music2.mp3" type="audio/mpeg">
- </audio>
- <div class="all">
- <div class="box"></div>
- <div><img class="image" src="https://img.tukuppt.com/png_preview/00/26/14/aWQEJpQSmP.jpg!/fw/780" alt="" />
- </div>
- 
- <div><img src="https://cdn-icons-png.flaticon.com/512/5225/5225800.png" class="volume" alt="Image" onclick="playAudio2()"/></div>
- <audio id="myAudio2">
-   <source src="\ex2\实验2\醒狮\╨╤╩¿\music\music3.mp3" type="audio/mpeg">
- </audio>
- <div class="all">
- <div class="box"></div>
- <div><img class="image" src="https://imgservice.suning.cn/uimg1/b2c/image/aUZL4f3a4IYbxriYN16h4w.jpg_800w_800h_4e " alt=""/>
- </div>
+  
 
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
- <script src="script.js"></script>
- <script type="text/javascript">
-	function playAudio() {
-	  var audio = document.getElementById("myAudio");
-	  audio.play();
+  <script>
+	
+	function playAudio(){
+		var audio = document.getElementById("myAudio");
+		audio.play();
 	}
-	function playAudio1() {
-	  var audio = document.getElementById("myAudio1");
-	  audio.play();
+	
+	function playAudio1(){
+		var audio = document.getElementById("myAudio1");
+		audio.play();
 	}
-	function playAudio2() {
-	  var audio = document.getElementById("myAudio2");
-	  audio.play();
+	
+	function playAudio2(){
+		var audio = document.getElementById("myAudio2");
+		audio.play();
 	}
-	 
- $(function() {
-  $(".image").draggable({
-     containment: 'document',
-     helper: 'clone',
-     cursor: 'move',
-     revert: 'invalid',
-     start: function(event, ui) {
-       $(ui.helper).css('z-index', 2000);
-     }
-  });
- 
-  $(".box").droppable({
-     accept: '.image',
-     hoverClass: 'ui-state-hover',
-     drop: function(event, ui) {
-       $(this).append($(ui.draggable).clone());
-       $(ui.draggable).remove();
-     }
-  });
- });
- </script>
+    
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+
+    function drag(event) {
+      event.dataTransfer.setData("text", event.target.id);
+    }
+
+    function drop(event, dropZoneId) {
+      event.preventDefault();
+      var data = event.dataTransfer.getData("text");
+      var draggableElement = document.getElementById(data);
+      var dropZone = document.getElementById(dropZoneId);
+
+      dropZone.appendChild(draggableElement);
+    }
+  </script>
+
 </body>
 </html>
+
