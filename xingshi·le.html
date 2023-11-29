@@ -71,6 +71,11 @@
 		margin-bottom:30px;
 		}
 		
+	.fixed {
+		   position: relative;
+			left:-135px;
+		 }
+		
   </style>
 </head>
 <body>
@@ -112,7 +117,6 @@
   <img id="image3" class="draggable" src="https://imgservice.suning.cn/uimg1/b2c/image/aUZL4f3a4IYbxriYN16h4w.jpg_800w_800h_4e" draggable="true" ondragstart="drag(event)">
 	</div>
  </div>
-  
 
   <script>
 	
@@ -131,22 +135,30 @@
 		audio.play();
 	}
     
-    function allowDrop(event) {
-      event.preventDefault();
-    }
-
-    function drag(event) {
-      event.dataTransfer.setData("text", event.target.id);
-    }
-
-    function drop(event, dropZoneId) {
-      event.preventDefault();
-      var data = event.dataTransfer.getData("text");
-      var draggableElement = document.getElementById(data);
-      var dropZone = document.getElementById(dropZoneId);
-
-      dropZone.appendChild(draggableElement);
-    }
+   function allowDrop(event) {
+     event.preventDefault();
+   }
+     
+   function drag(event) {
+     event.dataTransfer.setData("text", event.target.id);
+   }
+     
+   function drop(event) {
+     event.preventDefault();
+     var data = event.dataTransfer.getData("text");
+     var draggedElement = document.getElementById(data);
+     var dropZone = event.target;
+     
+     if (dropZone.classList.contains('draggable')) {
+       dropZone = dropZone.parentNode;
+     }
+     
+     if (dropZone.classList.contains('drop-zone') && dropZone.children.length === 0) {
+       dropZone.appendChild(draggedElement);
+       draggedElement.draggable = false; 
+       dropZone.classList.add('fixed');
+     }
+   }
   </script>
 
 </body>
