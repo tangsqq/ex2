@@ -3,81 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>点击/触摸显示放大部分</title>
+  <title>移动版放大效果</title>
   <style>
-    /* 基本样式 */
-    #container {
-      position: relative;
-      overflow: hidden;
-    }
-
-    #image {
-      display: block;
+    #yourImage {
       width: 100%;
-      height: auto;
-    }
-
-    #zoomed-image {
-      position: absolute;
-      border: 2px solid #ccc;
-      display: none;
-      width: 200px; /* 放大后的图片宽度 */
-      height: 200px; /* 放大后的图片高度 */
+      max-width: 300px; /* 设置图片的最大宽度 */
+      cursor: pointer;
     }
   </style>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
 
-<div id="container">
-  <img id="image" src="image/drum.png" alt="Your Image">
-  <div id="zoomed-image"></div>
-</div>
+  <img id="yourImage" src="image/tiger.jpeg" alt="Your Image">
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script>
-  $(document).ready(function() {
-    var container = $("#container");
-    var image = $("#image");
-    var zoomedImage = $("#zoomed-image");
+  <script>
+    $(document).ready(function(){
+      var zoomLevel = 1; // 初始缩放级别
+      var maxZoom = 2; // 最大缩放级别
+      var minZoom = 1; // 最小缩放级别
+      var zoomIncrement = 0.1; // 缩放增量
 
-    container.on("click touchstart", function(e) {
-      var offsetX, offsetY;
+      var touchStart = { x: 0, y: 0 };
+      var isZooming = false;
 
-      if (e.type === "click") {
-        offsetX = e.pageX - container.offset().left;
-        offsetY = e.pageY - container.offset().top;
-      } else if (e.type === "touchstart") {
-        offsetX = e.originalEvent.touches[0].pageX - container.offset().left;
-        offsetY = e.originalEvent.touches[0].pageY - container.offset().top;
-      }
-
-      var imageWidth = image.width();
-      var imageHeight = image.height();
-
-      var zoomedWidth = zoomedImage.width();
-      var zoomedHeight = zoomedImage.height();
-
-      var leftPos = Math.min(Math.max(offsetX - zoomedWidth / 2, 0), imageWidth - zoomedWidth);
-      var topPos = Math.min(Math.max(offsetY - zoomedHeight / 2, 0), imageHeight - zoomedHeight);
-
-      zoomedImage.css({
-        left: leftPos,
-        top: topPos,
-        background: "url('" + image.attr("src") + "') -" + leftPos + "px -" + topPos + "px no-repeat",
-        backgroundSize: imageWidth + "px " + imageHeight + "px"
+      $("#yourImage").on('touchstart', function(e){
+        var touch = e.originalEvent.touches[0];
+        touchStart = { x: touch.pageX, y: touch.pageY };
+        isZooming = true;
       });
 
-      zoomedImage.show();
-    });
+      $("#yourImage").on('touchmove', function(e){
+        if (isZooming && e.originalEvent.touches.length == 2) {
+          var touch1 = e.originalEvent.touches[0];
+          var touch2 = e.originalEvent.touches[1];
 
-    $(document).on("click touchstart", function(e) {
-      // 隐藏放大镜效果，除非点击在放大镜区域内
-      if (!$(e.target).closest("#zoomed-image").length) {
-        zoomedImage.hide();
-      }
+          var currentDistance = Math.hypot(touch1.pageX - touch2.pageX, touch1.pageY - touch2.pageY);
+          var previousDistance = Math.hypot(touchStart.x - touch2.pageX, touchStart.y - touch2.pageY);
+
+          var delta = currentDistance - previousDistance;
+
+          if (delta > 0 && zoomLevel < maxZoom) {
+            zoomLevel += zoomIncrement;
+          } else if (delta < 0 && zoomLevel > minZoom) {
+            zoomLevel -= zoomIncrement;
+          }
+
+          $("#yourImage").css('transform', 'scale(' + zoomLevel + ')');
+        }
+      });
+
+      $("#yourImage").on('touchend', function(){
+        isZooming = false;
+      });
     });
-  });
-</script>
+  </script>
 
 </body>
 </html>
