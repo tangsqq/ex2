@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>长按添加放大镜</title>
+  <title>点击/触摸显示放大部分</title>
   <style>
     /* 基本样式 */
     #container {
@@ -39,18 +39,42 @@
     var container = $("#container");
     var image = $("#image");
     var zoomedImage = $("#zoomed-image");
-    var pressTimer;
 
-    container.on("touchstart", function() {
-      pressTimer = window.setTimeout(function() {
-        // 在此处添加放大镜效果的代码
-        zoomedImage.show();
-      }, 3000); // 设置长按时间为3秒
+    container.on("click touchstart", function(e) {
+      var offsetX, offsetY;
+
+      if (e.type === "click") {
+        offsetX = e.pageX - container.offset().left;
+        offsetY = e.pageY - container.offset().top;
+      } else if (e.type === "touchstart") {
+        offsetX = e.originalEvent.touches[0].pageX - container.offset().left;
+        offsetY = e.originalEvent.touches[0].pageY - container.offset().top;
+      }
+
+      var imageWidth = image.width();
+      var imageHeight = image.height();
+
+      var zoomedWidth = zoomedImage.width();
+      var zoomedHeight = zoomedImage.height();
+
+      var leftPos = Math.min(Math.max(offsetX - zoomedWidth / 2, 0), imageWidth - zoomedWidth);
+      var topPos = Math.min(Math.max(offsetY - zoomedHeight / 2, 0), imageHeight - zoomedHeight);
+
+      zoomedImage.css({
+        left: leftPos,
+        top: topPos,
+        background: "url('" + image.attr("src") + "') -" + leftPos + "px -" + topPos + "px no-repeat",
+        backgroundSize: imageWidth + "px " + imageHeight + "px"
+      });
+
+      zoomedImage.show();
     });
 
-    container.on("touchend", function() {
-      clearTimeout(pressTimer);
-      zoomedImage.hide();
+    $(document).on("click touchstart", function(e) {
+      // 隐藏放大镜效果，除非点击在放大镜区域内
+      if (!$(e.target).closest("#zoomed-image").length) {
+        zoomedImage.hide();
+      }
     });
   });
 </script>
