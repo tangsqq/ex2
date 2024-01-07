@@ -1,63 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>移动版放大效果</title>
-  <style>
-    #yourImage {
-      width: 100%;
-      max-width: 300px; /* 设置图片的最大宽度 */
-      cursor: pointer;
-    }
-  </style>
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-</head>
-<body>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport"/>
+		<title>醒狮服</title>
+		<style type="text/css">
+			
+		body{
+				
+				width:640px;
+				height:1030px;
+				margin:0 auto;
+				min-width:640px;
+				font-family:楷体;
+				background-color:#faebd7;
+				overflow-x:hidden;
+			}
+			
+			#mainDiv {
+			 display: flex;
+			 flex-direction:column;
+			 justify-content: center;
+			 align-items: center;
+			
+			}
+				#img{
+					position:absolute;
+					width:500px;
+					border-radius: 30px;
+					cursor: pointer;
+					transition: transform 0.3s ease-in-out;
+					transform-origin: top left;
+				}
+		#title{
+			width:150%;
+			position:relative;
+			left:-110px;
+			margin-bottom:50px;
+			animation: mymove 3s;
+		}
+		
+		@keyframes mymove {
+		  from {left:300px;}
+		  to {right: 0px;}
+		}	
+		</style>	
+		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+		<script>
+		        $(document).ready(function(){
+		           
+		            var imageElement = $("#yourImage");
+		
+		            var isZoomed = false;
 
-  <img id="yourImage" src="image/tiger.jpeg" alt="Your Image">
+		            imageElement.click(function(event) {
+		               
+		                var offsetX = event.pageX - imageElement.offset().left;
+		                var offsetY = event.pageY - imageElement.offset().top;
+		
+		                if (!isZoomed) {
+		                   
+		                    imageElement.css({
+		                        "transform": "scale(4)",
+		                        "transform-origin": offsetX + "px " + offsetY + "px"
+		                    });
+		
+		                    setTimeout(function() {
+		                        imageElement.css("transform", "scale(1)");
+		                       
+		                        isZoomed = !isZoomed;
+		                    }, 10000);
+		                } else {
+		                   
+		                    imageElement.css("transform", "scale(1)");
+		                }
 
-  <script>
-    $(document).ready(function(){
-      var zoomLevel = 1; // 初始缩放级别
-      var maxZoom = 2; // 最大缩放级别
-      var minZoom = 1; // 最小缩放级别
-      var zoomIncrement = 0.1; // 缩放增量
+		                isZoomed = !isZoomed;
+		            });
+		        });
+		    </script>
 
-      var touchStart = { x: 0, y: 0 };
-      var isZooming = false;
-
-      $("#yourImage").on('touchstart', function(e){
-        var touch = e.originalEvent.touches[0];
-        touchStart = { x: touch.pageX, y: touch.pageY };
-        isZooming = true;
-      });
-
-      $("#yourImage").on('touchmove', function(e){
-        if (isZooming && e.originalEvent.touches.length == 2) {
-          var touch1 = e.originalEvent.touches[0];
-          var touch2 = e.originalEvent.touches[1];
-
-          var currentDistance = Math.hypot(touch1.pageX - touch2.pageX, touch1.pageY - touch2.pageY);
-          var previousDistance = Math.hypot(touchStart.x - touch2.pageX, touchStart.y - touch2.pageY);
-
-          var delta = currentDistance - previousDistance;
-
-          if (delta > 0 && zoomLevel < maxZoom) {
-            zoomLevel += zoomIncrement;
-          } else if (delta < 0 && zoomLevel > minZoom) {
-            zoomLevel -= zoomIncrement;
-          }
-
-          $("#yourImage").css('transform', 'scale(' + zoomLevel + ')');
-        }
-      });
-
-      $("#yourImage").on('touchend', function(){
-        isZooming = false;
-      });
-    });
-  </script>
-
-</body>
+		
+	<body>
+		<div id="mainDiv">
+			<img src="image\xingshi·fu.png" id="title" />	
+			<img src="image\img1.png" id="yourImage" />
+		</div>
+	</body>
 </html>
