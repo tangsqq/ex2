@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>移动版放大镜</title>
+  <style>
+    /* 基本样式 */
+    #container {
+      position: relative;
+      overflow: hidden;
+    }
+
+    #image {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    #zoomed-image {
+      position: absolute;
+      border: 2px solid #ccc;
+      display: none;
+      width: 200px; /* 放大后的图片宽度 */
+      height: 200px; /* 放大后的图片高度 */
+    }
+  </style>
+</head>
+<body>
+
+<div id="container">
+  <img id="image" src="image/drum.png" alt="Your Image">
+  <div id="zoomed-image"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+  $(document).ready(function() {
+    var container = $("#container");
+    var image = $("#image");
+    var zoomedImage = $("#zoomed-image");
+
+    container.on("mousemove touchmove", function(e) {
+      var mouseX = e.pageX || e.originalEvent.touches[0].pageX;
+      var mouseY = e.pageY || e.originalEvent.touches[0].pageY;
+
+      var containerOffset = container.offset();
+      var offsetX = mouseX - containerOffset.left;
+      var offsetY = mouseY - containerOffset.top;
+
+      var imageWidth = image.width();
+      var imageHeight = image.height();
+      var ratioX = imageWidth / container.width();
+      var ratioY = imageHeight / container.height();
+
+      var zoomedWidth = zoomedImage.width();
+      var zoomedHeight = zoomedImage.height();
+
+      var leftPos = offsetX - zoomedWidth / 2;
+      var topPos = offsetY - zoomedHeight / 2;
+
+      leftPos = Math.min(Math.max(leftPos, 0), imageWidth - zoomedWidth);
+      topPos = Math.min(Math.max(topPos, 0), imageHeight - zoomedHeight);
+
+      zoomedImage.css({
+        left: leftPos / ratioX,
+        top: topPos / ratioY,
+        background: "url('" + image.attr("src") + "') -" + leftPos + "px -" + topPos + "px no-repeat",
+        backgroundSize: (imageWidth * ratioX
